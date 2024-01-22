@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+<HTA:APPLICATION>
+<SCRIPT LANGUAGE=VBScript>
+function LoadDropDown
+Const xlSaveChanges = 1
+set objshell = CreateObject("Wscript.Shell")
+dir = objshell.CurrentDirectory
+Set myxl1 = createobject("excel.application")
+Set objwb1 = myxl1.Workbooks.Open(dir+"\DayBook.xlsx")
+Set objSheet = objwb1.workSheets(1)
+Row=objSheet.UsedRange.Rows.count
+Col = MyDropDown.value
+file_name = filename.value
+for i=1 to Row
+j=1
+comp_name = myxl1.Cells(i,j).value
+j=j+1
+comp_val = myxl1.Cells(i,j).value
+Set myxl = createobject("excel.application")
+Set objwb = myxl.Workbooks.Open(dir+"\"+file_name+".xlsx")
+Set FoundCell = myxl.ActiveSheet.UsedRange.Find(comp_name)
+If Not FoundCell Is Nothing Then
+Row = FoundCell.Row
+myxl.cells(Row,Col).value = comp_val
+objwb.close xlSaveChanges
+else
+Set cont = document.getElementById("div")
+Set br = document.createElement("br")
+strText = comp_name & " - " & comp_val
+Set Items = document.createTextNode(strText & vbNewLine)
+cont.appendChild(Items)
+cont.appendChild(br)
+objwb.close xlSaveChanges
+end if
+myxl.application.Quit
+Next
+objwb1.close
+myxl1.application.quit
+Msgbox "Values Inserted"
+end function
+</SCRIPT>
+</HEAD>
+<BODY>
+<center>
+<label><b>Enter Cost Center File Name</b></label><br><br>
+<input type="textbox" id="filename" /><br/><br/>
+</center>
+<center>
+<b><Label> Select Month To Enter Values</Label></b><br/><br/>
+<SELECT ID=MyDropDown>
+<OPTION value="D">April</OPTION>
+<OPTION value="E">May</OPTION>
+<OPTION value="F">June</OPTION>
+<OPTION value="G">July</OPTION>
+<OPTION value="H">August</OPTION>
+<OPTION value="I">September</OPTION>
+<OPTION value="J">October</OPTION>
+<OPTION value="K">November</OPTION>
+<OPTION value="L">December</OPTION>
+<OPTION value="M">January</OPTION>
+<OPTION value="N">February</OPTION>
+<OPTION value="O">March</OPTION>
+</SELECT><BR/><br/>
+</center>
+<center><Button style="width:280;height:50;
+  background-color:lightgreen;
+  border:dark;
+  color: white;"
+  onclick = "LoadDropDown()"><b>Click To Enter Value In Cost Center<b></Button></center><br/><br/>
+ <center>
+<div id="div">
+</div>
+</center>
+</BODY>
+</HTML>
